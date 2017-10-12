@@ -1,0 +1,14 @@
+{
+    "name": "benoitblin/isis_to_pmb",
+    "description": "Export data from ISIS to PMB",
+    "keywords": ["PMB", "ISIS"],
+    "authors": [
+        {
+            "name": "Benoit BLIN",
+            "email": "benoit.blin@gmail.com"
+        }
+    ],
+    "require": {
+        "carlossosa/ISISDatabaseExtract": "master"
+    }
+}

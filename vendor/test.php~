@@ -1,0 +1,109 @@
+<?php
+include './isis-db-extract-2013-10-11/ISIS/Exception/ExtractDataNVFBASEException.php';
+include './isis-db-extract-2013-10-11/ISIS/Exception/LoaderFileReadException.php';
+include './isis-db-extract-2013-10-11/ISIS/Exception/LoaderFileRequirementException.php';
+include './isis-db-extract-2013-10-11/ISIS/Exception/LoaderPathException.php';
+include './isis-db-extract-2013-10-11/ISIS/Database/Extract.php';
+include './isis-db-extract-2013-10-11/ISIS/Database/Loader.php';
+
+/**
+ * 
+ * $loader = new ISIS\Database\Loader('./Data/isis');
+ * $database = $loader->extract();
+*/
+
+/**
+ * $loader = new ISIS\Database\Loader('./Data/isis');
+ * $database = new \ISIS\Database\Extract($loader);
+ */
+
+$keys = array(
+	24 => "Titre",
+	104 => "Collection",
+	10 => "Infos",
+	20 => "Auteur",
+	21 => "Auteur secondaire",
+	23 => "Sous-titre",
+	27 => "Edition",
+	28 => "Pages",
+	29 => "Revue",
+	31 => "Langue de l'original",
+	40 => "Tome",
+	50 => "Résumé",
+	55 => "Notes",
+	60 => "Nom propre",
+	61 => "Nom d'institution",
+	62 => "Descripteurs",
+	63 => "Nom géographique",
+	64 => "Péricope",
+	65 => "Livre biblique",
+	70 => "Bibliothéque",
+	71 => "Cote",
+	81 => "ISBN",
+	90 => "Date de validation",
+	91 => "Date de saisie",
+	92 => "Op. de saisie",
+	93 => "Indexeur",
+	100 => "Titre parallèle",
+	101 => "Traducteur(s)",
+	102 => "Préfacier",
+	105 => "Sous-collection",
+	106 => "Format",
+	108 => "1ère publication",
+	110 => "Sous la direction de",
+	111 => "Recension(s)",
+	12 => "Detail"
+);
+
+$keysOnly = array_keys($keys);
+
+echo "<table style='border:1pt solid black'><tr>";
+
+foreach($keys as $title) {
+	echo "<th>".utf8_decode($title)."</th>";
+}
+
+echo "</tr>";
+
+$database = new \ISIS\Database\Extract('./MDF');
+
+foreach ($database as $record) {
+	echo "<tr>";
+	foreach($keys as $key => $title) {
+		echo "<td>";
+		if(array_key_exists($key, $record)) {
+			if(!is_array($record[$key][0])) {
+				echo utf8_decode($record[$key][0]);
+			} else {
+				echo "<ul>";
+				foreach($record[$key][0] as $subField) {
+					echo "<li>".utf8_decode($subField)."</li>";
+				}
+				echo "</ul>";
+			}
+		} elseif(array_key_exists("0".$key, $record)) {
+			if(!is_array($record["0".$key][0])) {
+				echo utf8_decode($record["0".$key][0]);
+			} else {
+				echo "<ul>";
+				foreach($record["0".$key][0] as $subField) {
+					echo "<li>".utf8_decode($subField)."</li>";
+				}
+				echo "</ul>";
+			}
+		}
+		echo "</td>";
+	}
+	echo "</tr>";
+	break;
+}
+
+echo "</table>";
+$mfn = 2;
+
+/**
+ * Yo can also access to record using;
+ */
+// var_dump( $database->fetch($mfn));
+
+?>
